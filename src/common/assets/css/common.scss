@@ -1,0 +1,123 @@
+@import url(./reser.css);
+.pointer {
+	cursor: pointer;
+}
+.pr {
+	position: relative;
+}
+
+.flex {
+	display: flex;
+}
+
+.fyc {
+	align-items: center;
+}
+
+.fye {
+	align-items: flex-end;
+}
+
+.fys {
+	align-items: flex-start;
+}
+
+.fyb {
+	align-items: baseline;
+}
+
+.fxc {
+	justify-content: center;
+}
+
+.fxsb {
+	justify-content: space-between;
+}
+
+.fxfe {
+	justify-content: flex-end;
+}
+
+.fxsa {
+	justify-content: space-around;
+}
+
+.fdc {
+	flex-direction: column;
+}
+.fwnw {
+	flex-wrap: nowrap;
+}
+.fww {
+	flex-wrap: wrap;
+}
+.nw {
+	white-space: nowrap;
+}
+
+$gaps: -25, -20, -15, -10, -5, -4, -2, 0, 4, 5, 6, 8, 10, 12, 14, 15, 16, 18, 20, 24, 28, 30, 35, 40, 45;
+$unit: 1px;
+$fons: 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20;
+
+@each $gap in $gaps {
+	.mg-#{$gap} {
+		margin: $gap * $unit;
+	}
+	.pd-#{$gap} {
+		padding: $gap * $unit;
+	}
+	.xgap-#{$gap} {
+		column-gap: $gap * $unit;
+	}
+
+	.ygap-#{$gap} {
+		row-gap: $gap * $unit;
+	}
+
+	.my-#{$gap} {
+		margin: $gap * $unit auto;
+	}
+
+	.mx-#{$gap} {
+		margin-left: $gap * $unit;
+		margin-right: $gap * $unit;
+	}
+
+	.ml-#{$gap} {
+		margin-left: $gap * $unit;
+	}
+
+	.mr-#{$gap} {
+		margin-right: $gap * $unit;
+	}
+
+	.mb-#{$gap} {
+		margin-bottom: $gap * $unit;
+	}
+
+	.mt-#{$gap} {
+		margin-top: $gap * $unit;
+	}
+
+	.pl-#{$gap} {
+		padding-left: $gap * $unit;
+	}
+
+	.pr-#{$gap} {
+		padding-right: $gap * $unit;
+	}
+
+	.pb-#{$gap} {
+		padding-bottom: $gap * $unit;
+	}
+
+	.pt-#{$gap} {
+		padding-top: $gap * $unit;
+	}
+}
+
+@each $fon in $fons {
+	.font-#{$fon} {
+		font-size: $fon * $unit;
+	}
+}
