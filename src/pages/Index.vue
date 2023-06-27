@@ -36,7 +36,7 @@ const onSubmit = (values: any) => {
     forbidClick: true,
     duration: 0,
   });
-  axios.post('https://xinwucun.cn/Covid19/add', values).then((res: any) => {
+  axios.post('http://cqwphp.com/Covid19/add', values).then((res: any) => {
     if (res.data.ok) {
       showSuccessToast(res.data.data);
       store.commit('setIsWtite', 1)

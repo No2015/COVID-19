@@ -1,5 +1,6 @@
 import { createRouter, createWebHashHistory, Router } from 'vue-router';
 import Index from '../pages/Index.vue'
+import List from '../pages/List.vue'
 
 const router: Router = createRouter({
   history: createWebHashHistory(),
@@ -13,6 +14,11 @@ const router: Router = createRouter({
       name: 'index',
       path: '/index',
       component: Index
+    },
+    {
+      name: 'list',
+      path: '/list',
+      component: List
     },
   ]
 });
