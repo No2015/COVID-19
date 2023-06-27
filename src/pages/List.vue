@@ -28,6 +28,7 @@ type Item = {
   area: string,
   username: string,
   zwpg: string,
+  xb: string,
   t1: number,
   t2: number,
   t3: number,
@@ -63,7 +64,11 @@ const enums: Enums = {
     '1': '轻微',
     '2': '一般',
     '3': '严重',
-  }
+  },
+  xb: {
+    '1': '男',
+    '2': '女',
+  },
 }
 
 const hyzList = [
@@ -151,8 +156,11 @@ const loading = ref(false);
 const finished = ref(false);
 const refreshing = ref(false);
 const onRefresh = () => {
-
+  refreshing.value = true
+  list.value = []
+  pages.page = -1
   // 重新加载数据
+  finished.value = false
   // 将 loading 设置为 true，表示处于加载状态
   loading.value = true;
   onLoad();
@@ -191,13 +199,15 @@ const getHyz = computed(() => {
 
 <template>
   <div class="page-box">
-    <h1 style="margin-bottom: 1rem;">新冠后遗症调查列表</h1>
+    <h1 style="margin-bottom: 1rem;">新冠后遗症调查列表({{ list.length }}/{{ pages.count }})</h1>
+    <router-link class="to-link" to="/analysis">数据分析</router-link>
     <div class="form-box">
       <div class="flex fxsb th">
         <div class="td-1">序号</div>
         <div class="td-2">感染次数</div>
+        <div class="td-2">感染程度</div>
         <div class="td-3">后遗症</div>
-        <div class="td-4">提交时间</div>
+        <!-- <div class="td-4">提交时间</div> -->
         <div class="td-5">操作</div>
       </div>
       <div class="list-box">
@@ -211,8 +221,9 @@ const getHyz = computed(() => {
           <div class="flex fxsb tr" v-for="(item, key) in list" :key="key">
             <div class="td-1">{{ key + 1 }}</div>
             <div class="td-2">{{ item.gr == '2' ? 0 : enums.grcs[item.grcs] }}次</div>
+            <div class="td-2">{{ item.gr == '2' ? '-' : enums.zwpg[item.zwpg] }}</div>
             <div class="td-3">{{ item.gr == '2' ? '-' : enums.hyz[item.hyz] }}</div>
-            <div class="td-4">{{ item.addtime }}</div>
+            <!-- <div class="td-4">{{ item.addtime }}</div> -->
             <div class="td-5 btn-a" @click="onDetail(item, key)">详情</div>
           </div>
           </van-list>
@@ -231,9 +242,10 @@ const getHyz = computed(() => {
       <div class="show-title">序号{{ showIndex + 1 }}</div>
       <van-cell-group>
         <!-- <van-cell title="是否感染新冠" :value="showItem?.gr === '1' ? '是' : '否'" /> -->
-        <van-cell title="感染次数" :value="(showItem?.gr === '1' ? showItem?.grcs : 0) + '次'" />
+        <van-cell title="感染次数" :value="(showItem?.gr === '1' ? enums.grcs[showItem?.grcs] : 0) + '次'" />
         <van-cell title="感染程度" :value="showItem?.zwpg ? enums.zwpg[showItem?.zwpg] : '--'" />
-        <van-cell center title="后遗症" :value="showItem?.hyz ? getHyz : '--'" />
+        <van-cell center title="后遗症" :value="showItem?.hyz === '1' ? getHyz : '--'" />
+        <van-cell center title="性别" :value="showItem?.xb ? enums.xb[showItem?.xb] : '--'" />
         <van-cell center title="所在区域" :value="showItem?.area ? showItem?.area : '--'" />
         <van-cell center title="提交时间" :value="showItem?.addtime ? showItem?.addtime : '--'" />
       </van-cell-group>
@@ -294,5 +306,12 @@ const getHyz = computed(() => {
     padding: 0 20px 5px;
     font-weight: 600;
   }
+}
+.to-link {
+  position: absolute;
+  right: 10px;
+  font-size: 12px;
+  top: 10px;
+  color: #ff5a0c;
 }
 </style>

@@ -3,14 +3,15 @@ import { ref, reactive } from 'vue';
 import { useRoute,useRouter } from 'vue-router'
 import { useStore } from 'vuex'
 import { showToast, showLoadingToast, showSuccessToast, showFailToast } from 'vant';
-import GRCS from '../components/GRCS.vue';
-import GR from '../components/GR.vue';
-import HYZ from '../components/HYZ.vue';
-import ZWPG from '../components/ZWPG.vue';
-import USERNAME from '../components/USERNAME.vue';
-import AREA from '../components/AREA.vue';
-import T1 from '../components/T1.vue';
-import OTHER from '../components/OTHER.vue';
+import GRCS from '../components/Index/GRCS.vue';
+import GR from '../components/Index/GR.vue';
+import HYZ from '../components/Index/HYZ.vue';
+import ZWPG from '../components/Index/ZWPG.vue';
+import USERNAME from '../components/Index/USERNAME.vue';
+import AREA from '../components/Index/AREA.vue';
+import T1 from '../components/Index/T1.vue';
+import OTHER from '../components/Index/OTHER.vue';
+import XB from '../components/Index/XB.vue';
 import axios from 'axios'
 
 const route = useRoute()
@@ -71,6 +72,7 @@ const fd: Fd = reactive({
   username: '',
   area: '',
   other: '',
+  xb: '',
 })
 
 const hyzList = ref([
@@ -140,6 +142,7 @@ const hyzList = ref([
 <template>
   <div class="page-box">
     <h1 style="margin-bottom: 1rem;">新冠后遗症调查问卷</h1>
+    <router-link class="to-link" to="/list">提交记录</router-link>
     <div class="form-box">
       <van-form @submit="onSubmit">
         <div class="list-box">
@@ -155,6 +158,7 @@ const hyzList = ref([
             </template>
           </template>
           <template v-if="fd.gr !== ''">
+            <XB v-model:value="fd.xb" @change="onChange($event, 'xb')"></XB>
             <USERNAME v-model:value="fd.username" @change="onChange($event, 'username')"></USERNAME>
             <AREA v-model:value="fd.area" @change="onChange($event, 'area')"></AREA>
           </template>
@@ -190,5 +194,12 @@ const hyzList = ref([
   color: rgb(241, 21, 21);
   font-size: 0.875rem;
   padding: var(--van-cell-vertical-padding) var(--van-cell-horizontal-padding);
+}
+.to-link {
+  position: absolute;
+  right: 10px;
+  font-size: 12px;
+  top: 10px;
+  color: #ff5a0c
 }
 </style>

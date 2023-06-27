@@ -1,8 +1,13 @@
 <script setup lang="ts">
-import { ref, reactive } from 'vue';
+import { ref, onMounted } from 'vue';
 import { useRoute,useRouter } from 'vue-router'
 import { useStore } from 'vuex'
-import { showToast, showLoadingToast, showSuccessToast, showFailToast } from 'vant';
+import { showToast, showFailToast } from 'vant';
+import Chart1 from '../components/Analysis/Chart1.vue'
+import Chart2 from '../components/Analysis/Chart2.vue'
+import Chart3 from '../components/Analysis/Chart3.vue'
+import Chart4 from '../components/Analysis/Chart4.vue'
+import Chart5 from '../components/Analysis/Chart5.vue'
 import axios from 'axios'
 
 const route = useRoute()
@@ -13,50 +18,156 @@ console.log(route)
 console.log(router)
 console.log(store)
 
-const getList = () => {
-  axios.post('https://xinwucun.cn/Covid19/analysis', {}).then((res: any) => {
+type Enums = {
+  [key: string]: any
+}
+const enums: Enums = {
+  grcs: {
+    '1': '1',
+    '2': '2',
+    '3': '多',
+  },
+  hyz: {
+    '1': '有',
+    '2': '无',
+  },
+  zwpg: {
+    '1': '轻微',
+    '2': '一般',
+    '3': '严重',
+  }
+}
+
+const hyzList = [
+  {
+    name: 't1',
+    value: false,
+    label: '乏力或疲倦'
+  },
+  {
+    name: 't2',
+    value: false,
+    label: '思维障碍或不能集中精力'
+  },
+  {
+    name: 't3',
+    value: false,
+    label: '呼吸急促或困难'
+  },
+  {
+    name: 't4',
+    value: false,
+    label: '头痛'
+  },
+  {
+    name: 't5',
+    value: false,
+    label: '头晕'
+  },
+  {
+    name: 't6',
+    value: false,
+    label: '心跳加速'
+  },
+  {
+    name: 't7',
+    value: false,
+    label: '胸口疼痛'
+  },
+  {
+    name: 't8',
+    value: false,
+    label: '咳嗽'
+  },
+  {
+    name: 't9',
+    value: false,
+    label: '关节或肌肉疼痛'
+  },
+  {
+    name: 't10',
+    value: false,
+    label: '抑郁或焦虑'
+  },
+  {
+    name: 't11',
+    value: false,
+    label: '发热'
+  },
+  {
+    name: 't12',
+    value: false,
+    label: '嗅觉或味觉丧失'
+  },
+]
+const data = ref<any>()
+const getAnalysis = () => {
+  axios.post('http://cqwphp.com/Covid19/analysis', {}).then((res: any) => {
     if (res.data.ok) {
-      list.value = res.data.data
+      // console.log(res.data)
+      data.value = res.data.data
     } else {
-      showFailToast(res.data.data);
+      showFailToast(res.data.message);
     }
   }).catch(() => {
     showToast('系统错误');
   })
 };
-
-const list = ref([])
+getAnalysis()
 </script>
 
 <template>
   <div class="page-box">
-    <h1 style="margin-bottom: 1rem;">新冠后遗症调查分析</h1>
+    <h1 style="margin-bottom: 1rem;">新冠后遗症调查数据分析</h1>
     <div class="form-box">
-      
+      <div class="unit-box">
+        <div class="unit-title">感染人数分析</div>
+        <Chart1 :data="data"></Chart1>
+      </div>
+      <div class="unit-box">
+        <div class="unit-title">感染次数分析</div>
+        <Chart2 :data="data"></Chart2>
+      </div>
+      <div class="unit-box">
+        <div class="unit-title">感染状况分析</div>
+        <Chart3 :data="data"></Chart3>
+      </div>
+      <div class="unit-box">
+        <div class="unit-title">后遗症人数分析</div>
+        <Chart4 :data="data"></Chart4>
+      </div>
+      <div class="unit-box">
+        <div class="unit-title">后遗症状况分析</div>
+        <Chart5 :data="data"></Chart5>
+      </div>
     </div>
   </div>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
+.unit-box {
+  margin: 20px 0;
+}
+.unit-title {
+  text-align: left;
+  margin-bottom: 10px;
+  font-size: 14px;
+  line-height: 1;
+  padding-left: 10px;
+  border-left: 2px solid #ff5a0c;
+  border-radius: 2px;
+  font-weight: 600;
+}
+.unit-echarts {
+  height: 200px;
+}
 .page-box {
-  height: 100%;
+  height: calc(100% + 20px);
   overflow: hidden;
 }
 .form-box {
-  height: calc(100% - 20px);
-}
-.list-box {
-  /* height: calc(100% - 20px); */
-  /* overflow: auto; */
-}
-.van-form {
-  height: 100%;
+  height: calc(100% - 40px);
+  font-size: 14px;
   overflow: auto;
-}
-.msg-title {
-  text-align: left;
-  color: rgb(241, 21, 21);
-  font-size: 0.875rem;
-  padding: var(--van-cell-vertical-padding) var(--van-cell-horizontal-padding);
 }
 </style>
