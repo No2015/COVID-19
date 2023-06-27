@@ -20,11 +20,17 @@ const store = useStore()
 console.log(route)
 console.log(router)
 console.log(store)
+if (store.state.isWrite) {
+  router.push('/list')
+}
 
 const onSubmit = (values: any) => {
   // console.log('submit', values);
   if (store.state.isWrite) {
     showToast('您已经提交了哦~');
+    setTimeout(() => {
+      router.push('/list')
+    }, 1e3);
     return false
   }
   if (!values.gr) {
@@ -42,15 +48,22 @@ const onSubmit = (values: any) => {
       store.commit('setIsWtite', 1)
     } else {
       showFailToast(res.data.data);
+      setTimeout(() => {
+        router.push('/list')
+      }, 1e3);
     }
   }).catch(() => {
     showToast('系统错误');
   })
 };
+
+type Fd = {
+  [ket: string]: any
+}
 const onChange = (value: string, key: string) => {
   fd[key] = value
 }
-const fd = reactive({
+const fd: Fd = reactive({
   gr: '',
   hyz: '',
   grcs: '',

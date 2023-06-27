@@ -5,7 +5,7 @@ import './style.css'
 import App from './App.vue'
 import './common/assets/css/common.scss'
 import 'vant/lib/index.css';
-import {Cell,CellGroup,Checkbox,CheckboxGroup,Form,Field,Area,Popup,Radio,RadioGroup,Button,Toast} from 'vant'
+import {Cell,CellGroup,Checkbox,CheckboxGroup,Form,Field,Area,Popup,Radio,RadioGroup,Button,Toast,PullRefresh,List} from 'vant'
 
 const app = createApp(App)
 
@@ -21,6 +21,8 @@ app.use(Radio)
 app.use(RadioGroup)
 app.use(Button)
 app.use(Toast)
+app.use(PullRefresh)
+app.use(List)
 
 app.use(router);
 app.use(store);
