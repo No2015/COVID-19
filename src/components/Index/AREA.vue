@@ -1,3 +1,22 @@
+<template>
+  <van-field
+    v-model="result"
+    is-link
+    readonly
+    name="area"
+    label="所在地区"
+    placeholder="点击选择省市区"
+    @click="showArea = true"
+  />
+  <van-popup v-model:show="showArea" position="bottom">
+    <van-area
+      :area-list="areaList"
+      @confirm="onConfirm"
+      @cancel="showArea = false"
+    />
+  </van-popup>
+</template>
+
 <script setup lang="ts">
 import { ref } from 'vue'
 import { areaList } from '@vant/area-data';
@@ -17,25 +36,6 @@ const onConfirm = (res: any) => {
   result.value = selectedOptions.map((item: any) => item.text).join('/');
 };
 </script>
-
-<template>
-  <van-field
-    v-model="result"
-    is-link
-    readonly
-    name="area"
-    label="所在地区"
-    placeholder="点击选择省市区"
-    @click="showArea = true"
-  />
-  <van-popup v-model:show="showArea" position="bottom">
-    <van-area
-      :area-list="areaList"
-      @confirm="onConfirm"
-      @cancel="showArea = false"
-    />
-  </van-popup>
-</template>
 
 <style scoped>
 </style>

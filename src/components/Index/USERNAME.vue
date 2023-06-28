@@ -1,3 +1,13 @@
+<template>
+  <van-field
+    v-model="username"
+    name="username"
+    label="联系方式"
+    placeholder="手机号/微信/QQ/邮箱等"
+    @change="onChange"
+  />
+</template>
+
 <script setup lang="ts">
 import { ref } from 'vue'
 const $emit = defineEmits(['change', 'input'])
@@ -15,16 +25,6 @@ const onChange = (val: string) => {
   $emit('input', val)
 }
 </script>
-
-<template>
-  <van-field
-    v-model="username"
-    name="username"
-    label="联系方式"
-    placeholder="手机号/微信/QQ/邮箱等"
-    @change="onChange"
-  />
-</template>
 
 <style scoped>
 </style>

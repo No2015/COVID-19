@@ -1,31 +1,7 @@
-<script setup lang="ts">
-import { ref } from 'vue';
-import { showToast, showFailToast } from 'vant';
-import Chart1 from '../components/Analysis/Chart1.vue'
-import Chart2 from '../components/Analysis/Chart2.vue'
-import Chart3 from '../components/Analysis/Chart3.vue'
-import Chart4 from '../components/Analysis/Chart4.vue'
-import Chart5 from '../components/Analysis/Chart5.vue'
-import axios from 'axios'
-
-const data = ref<any>({})
-const getAnalysis = () => {
-  axios.post('http://cqwphp.com/Covid19/analysis', {}).then((res: any) => {
-    if (res.data.ok) {
-      data.value = res.data.data
-    } else {
-      showFailToast(res.data.message);
-    }
-  }).catch(() => {
-    showToast('系统错误');
-  })
-};
-getAnalysis()
-</script>
-
 <template>
   <div class="page-box">
-    <h1 style="margin-bottom: 1rem;">新冠后遗症调查数据分析</h1>
+    <h1 style="margin-bottom: 20px;">新冠后遗症调查数据分析</h1>
+    <router-link class="to-link" to="/list">调查列表</router-link>
     <div class="form-box">
       <div class="unit-box">
         <div class="unit-title">感染人群分析</div>
@@ -50,6 +26,31 @@ getAnalysis()
     </div>
   </div>
 </template>
+
+<script setup lang="ts">
+import { ref } from 'vue';
+import { showToast, showFailToast } from 'vant';
+import Chart1 from '../components/Analysis/Chart1.vue'
+import Chart2 from '../components/Analysis/Chart2.vue'
+import Chart3 from '../components/Analysis/Chart3.vue'
+import Chart4 from '../components/Analysis/Chart4.vue'
+import Chart5 from '../components/Analysis/Chart5.vue'
+import axios from 'axios'
+
+const data = ref<any>({})
+const getAnalysis = () => {
+  axios.post('http://cqwphp.com/Covid19/analysis', {}).then((res: any) => {
+    if (res.data.ok) {
+      data.value = res.data.data
+    } else {
+      showFailToast(res.data.message);
+    }
+  }).catch(() => {
+    showToast('系统错误');
+  })
+};
+getAnalysis()
+</script>
 
 <style scoped lang="scss">
 .unit-box {
@@ -76,5 +77,12 @@ getAnalysis()
   height: calc(100% - 40px);
   font-size: 14px;
   overflow: auto;
+}
+.to-link {
+  position: absolute;
+  right: 10px;
+  font-size: 12px;
+  top: 10px;
+  color: #ff5a0c;
 }
 </style>

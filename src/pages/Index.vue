@@ -1,3 +1,37 @@
+<template>
+  <div class="page-box">
+    <h1 style="margin-bottom: 20px;">新冠后遗症调查问卷</h1>
+    <router-link class="to-link" to="/list">提交记录</router-link>
+    <div class="form-box">
+      <van-form @submit="onSubmit">
+        <div class="list-box">
+          <GR v-model:value="fd.gr" @change="onChange($event, 'gr')"></GR>
+          <template v-if="fd.gr === '1'">
+            <GRCS v-model:value="fd.grcs"></GRCS>
+            <ZWPG v-model:value="fd.zwpg"></ZWPG>
+            <HYZ v-model:value="fd.hyz" @change="onChange($event, 'hyz')"></HYZ>
+            <template v-if="fd.hyz === '1'">
+              <div class="msg-title">长期有以下症状请勾选：</div>
+              <T1 v-for="(item, key) in hyzList" :key="key" v-model:value="item.value" :name="item.name" :label="(key + 1 ) + '、' + item.label"></T1>
+              <OTHER v-model:value="fd.other"></OTHER>
+            </template>
+          </template>
+          <template v-if="fd.gr !== ''">
+            <XB v-model:value="fd.xb" @change="onChange($event, 'xb')"></XB>
+            <USERNAME v-model:value="fd.username" @change="onChange($event, 'username')"></USERNAME>
+            <AREA v-model:value="fd.area" @change="onChange($event, 'area')"></AREA>
+          </template>
+        </div>
+        <div style="margin: 16px;">
+          <van-button round block type="primary" native-type="submit">
+            提交
+          </van-button>
+        </div>
+      </van-form>
+    </div>
+  </div>
+</template>
+
 <script setup lang="ts">
 import { ref, reactive } from 'vue';
 import { useRoute,useRouter } from 'vue-router'
@@ -138,40 +172,6 @@ const hyzList = ref([
   },
 ])
 </script>
-
-<template>
-  <div class="page-box">
-    <h1 style="margin-bottom: 1rem;">新冠后遗症调查问卷</h1>
-    <router-link class="to-link" to="/list">提交记录</router-link>
-    <div class="form-box">
-      <van-form @submit="onSubmit">
-        <div class="list-box">
-          <GR v-model:value="fd.gr" @change="onChange($event, 'gr')"></GR>
-          <template v-if="fd.gr === '1'">
-            <GRCS v-model:value="fd.grcs"></GRCS>
-            <ZWPG v-model:value="fd.zwpg"></ZWPG>
-            <HYZ v-model:value="fd.hyz" @change="onChange($event, 'hyz')"></HYZ>
-            <template v-if="fd.hyz === '1'">
-              <div class="msg-title">长期有以下症状请勾选：</div>
-              <T1 v-for="(item, key) in hyzList" :key="key" v-model:value="item.value" :name="item.name" :label="(key + 1 ) + '、' + item.label"></T1>
-              <OTHER v-model:value="fd.other"></OTHER>
-            </template>
-          </template>
-          <template v-if="fd.gr !== ''">
-            <XB v-model:value="fd.xb" @change="onChange($event, 'xb')"></XB>
-            <USERNAME v-model:value="fd.username" @change="onChange($event, 'username')"></USERNAME>
-            <AREA v-model:value="fd.area" @change="onChange($event, 'area')"></AREA>
-          </template>
-        </div>
-        <div style="margin: 16px;">
-          <van-button round block type="primary" native-type="submit">
-            提交
-          </van-button>
-        </div>
-      </van-form>
-    </div>
-  </div>
-</template>
 
 <style scoped>
 .page-box {

@@ -1,5 +1,9 @@
+<template>
+  <div class="unit-echarts" ref="chart"></div>
+</template>
+
 <script setup lang="ts">
-import { ref, watch, toRef } from 'vue'
+import { ref, watch } from 'vue'
 import * as echarts from 'echarts'
 
 const props = defineProps({
@@ -118,10 +122,6 @@ watch(props, () => {
   immediate: true
 })
 </script>
-
-<template>
-  <div class="unit-echarts" ref="chart"></div>
-</template>
 
 <style scoped>
 </style>

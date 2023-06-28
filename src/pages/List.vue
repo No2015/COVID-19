@@ -1,3 +1,59 @@
+<template>
+  <div class="page-box">
+    <h1 style="margin-bottom: 20px;">新冠后遗症调查列表({{ list.length }}/{{ pages.count }})</h1>
+    <router-link class="to-link" to="/analysis">数据分析</router-link>
+    <div class="form-box">
+      <div class="flex fxsb th">
+        <div class="td-1">序号</div>
+        <div class="td-2">感染次数</div>
+        <div class="td-2">感染程度</div>
+        <div class="td-3">后遗症</div>
+        <!-- <div class="td-4">提交时间</div> -->
+        <div class="td-5">操作</div>
+      </div>
+      <div class="list-box">
+        <van-pull-refresh v-model="refreshing" @refresh="onRefresh">
+          <van-list
+            v-model:loading="loading"
+            :finished="finished"
+            finished-text="没有更多了"
+            @load="onLoad"
+          >
+          <div class="flex fxsb tr" v-for="(item, key) in list" :key="key">
+            <div class="td-1">{{ key + 1 }}</div>
+            <div class="td-2">{{ item.gr == '2' ? 0 : enums.grcs[item.grcs] }}次</div>
+            <div class="td-2">{{ item.gr == '2' ? '-' : enums.zwpg[item.zwpg] }}</div>
+            <div class="td-3">{{ item.gr == '2' ? '-' : enums.hyz[item.hyz] }}</div>
+            <!-- <div class="td-4">{{ item.addtime }}</div> -->
+            <div class="td-5 btn-a" @click="onDetail(item, key)">详情</div>
+          </div>
+          </van-list>
+        </van-pull-refresh>
+      </div>
+    </div>
+  </div>
+  <van-popup
+    v-model:show="show"
+    closeable
+    close-icon="close"
+    position="bottom"
+    :style="{ height: '50%', background: 'rgb(247,248,250)' }"
+  >
+    <div class="show-box">
+      <div class="show-title">序号{{ showIndex + 1 }}</div>
+      <van-cell-group>
+        <!-- <van-cell title="是否感染新冠" :value="showItem?.gr === '1' ? '是' : '否'" /> -->
+        <van-cell title="感染次数" :value="(showItem?.gr === '1' ? enums.grcs[showItem?.grcs] : 0) + '次'" />
+        <van-cell title="感染程度" :value="showItem?.zwpg ? enums.zwpg[showItem?.zwpg] : '--'" />
+        <van-cell center title="后遗症" :value="showItem?.hyz === '1' ? getHyz : '--'" />
+        <van-cell center title="性别" :value="showItem?.xb ? enums.xb[showItem?.xb] : '--'" />
+        <van-cell center title="所在区域" :value="showItem?.area ? showItem?.area : '--'" />
+        <van-cell center title="提交时间" :value="showItem?.addtime ? showItem?.addtime : '--'" />
+      </van-cell-group>
+    </div>
+  </van-popup>
+</template>
+
 <script setup lang="ts">
 import { ref, computed } from 'vue';
 import { useRoute,useRouter } from 'vue-router'
@@ -196,62 +252,6 @@ const getHyz = computed(() => {
   return hyz.join('、')
 })
 </script>
-
-<template>
-  <div class="page-box">
-    <h1 style="margin-bottom: 1rem;">新冠后遗症调查列表({{ list.length }}/{{ pages.count }})</h1>
-    <router-link class="to-link" to="/analysis">数据分析</router-link>
-    <div class="form-box">
-      <div class="flex fxsb th">
-        <div class="td-1">序号</div>
-        <div class="td-2">感染次数</div>
-        <div class="td-2">感染程度</div>
-        <div class="td-3">后遗症</div>
-        <!-- <div class="td-4">提交时间</div> -->
-        <div class="td-5">操作</div>
-      </div>
-      <div class="list-box">
-        <van-pull-refresh v-model="refreshing" @refresh="onRefresh">
-          <van-list
-            v-model:loading="loading"
-            :finished="finished"
-            finished-text="没有更多了"
-            @load="onLoad"
-          >
-          <div class="flex fxsb tr" v-for="(item, key) in list" :key="key">
-            <div class="td-1">{{ key + 1 }}</div>
-            <div class="td-2">{{ item.gr == '2' ? 0 : enums.grcs[item.grcs] }}次</div>
-            <div class="td-2">{{ item.gr == '2' ? '-' : enums.zwpg[item.zwpg] }}</div>
-            <div class="td-3">{{ item.gr == '2' ? '-' : enums.hyz[item.hyz] }}</div>
-            <!-- <div class="td-4">{{ item.addtime }}</div> -->
-            <div class="td-5 btn-a" @click="onDetail(item, key)">详情</div>
-          </div>
-          </van-list>
-        </van-pull-refresh>
-      </div>
-    </div>
-  </div>
-  <van-popup
-    v-model:show="show"
-    closeable
-    close-icon="close"
-    position="bottom"
-    :style="{ height: '50%', background: 'rgb(247,248,250)' }"
-  >
-    <div class="show-box">
-      <div class="show-title">序号{{ showIndex + 1 }}</div>
-      <van-cell-group>
-        <!-- <van-cell title="是否感染新冠" :value="showItem?.gr === '1' ? '是' : '否'" /> -->
-        <van-cell title="感染次数" :value="(showItem?.gr === '1' ? enums.grcs[showItem?.grcs] : 0) + '次'" />
-        <van-cell title="感染程度" :value="showItem?.zwpg ? enums.zwpg[showItem?.zwpg] : '--'" />
-        <van-cell center title="后遗症" :value="showItem?.hyz === '1' ? getHyz : '--'" />
-        <van-cell center title="性别" :value="showItem?.xb ? enums.xb[showItem?.xb] : '--'" />
-        <van-cell center title="所在区域" :value="showItem?.area ? showItem?.area : '--'" />
-        <van-cell center title="提交时间" :value="showItem?.addtime ? showItem?.addtime : '--'" />
-      </van-cell-group>
-    </div>
-  </van-popup>
-</template>
 
 <style scoped lang="scss">
 .page-box {
