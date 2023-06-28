@@ -1,7 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
-import { useRoute,useRouter } from 'vue-router'
-import { useStore } from 'vuex'
+import { ref } from 'vue';
 import { showToast, showFailToast } from 'vant';
 import Chart1 from '../components/Analysis/Chart1.vue'
 import Chart2 from '../components/Analysis/Chart2.vue'
@@ -10,40 +8,10 @@ import Chart4 from '../components/Analysis/Chart4.vue'
 import Chart5 from '../components/Analysis/Chart5.vue'
 import axios from 'axios'
 
-const route = useRoute()
-const router = useRouter()
-const store = useStore()
-
-console.log(route)
-console.log(router)
-console.log(store)
-
-type Enums = {
-  [key: string]: any
-}
-const enums: Enums = {
-  grcs: {
-    '1': '1',
-    '2': '2',
-    '3': '多',
-  },
-  hyz: {
-    '1': '有',
-    '2': '无',
-  },
-  zwpg: {
-    '1': '轻微',
-    '2': '一般',
-    '3': '严重',
-  }
-}
-
-
-const data = ref<any>()
+const data = ref<any>({})
 const getAnalysis = () => {
   axios.post('http://cqwphp.com/Covid19/analysis', {}).then((res: any) => {
     if (res.data.ok) {
-      // console.log(res.data)
       data.value = res.data.data
     } else {
       showFailToast(res.data.message);
@@ -60,7 +28,7 @@ getAnalysis()
     <h1 style="margin-bottom: 1rem;">新冠后遗症调查数据分析</h1>
     <div class="form-box">
       <div class="unit-box">
-        <div class="unit-title">感染人数分析</div>
+        <div class="unit-title">感染人群分析</div>
         <Chart1 :data="data"></Chart1>
       </div>
       <div class="unit-box">
@@ -72,7 +40,7 @@ getAnalysis()
         <Chart3 :data="data"></Chart3>
       </div>
       <div class="unit-box">
-        <div class="unit-title">后遗症人数分析</div>
+        <div class="unit-title">后遗症人群分析</div>
         <Chart4 :data="data"></Chart4>
       </div>
       <div class="unit-box">
