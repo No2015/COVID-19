@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, watch, toRef } from 'vue'
 import echarts from 'echarts'
 
 const props = defineProps({
@@ -8,16 +8,26 @@ const props = defineProps({
     default: () => (null)
   },
 })
-
+const data = toRef(props.data)
 const chart = ref(null)
+const initEcharts = () => {
+  console.log(chart.value)
+  console.log(data.value)
+}
+
 onMounted(() => {
-  if (props.data) {
+  if (data) {
     initEcharts()
   }
 })
-const initEcharts = () => {
-  console.log(chart.value)
-}
+
+watch(data, () => {
+  if (data.value) {
+    initEcharts()
+  }  
+}, {
+  deep: true,
+})
 </script>
 
 <template>
